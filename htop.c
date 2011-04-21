@@ -552,14 +552,14 @@ int main(int argc, char** argv) {
          doRefresh = true;
          break;
       }
+      case 'C':         /* (C)PU */
       case 'P':
       {
          refreshTimeout = 0;
          setSortKey(pl, PERCENT_CPU, panel, settings);
          break;
       }
-      case KEY_F(1):
-      case 'h':
+      case 'H':         /* (H)elp */
       case '?':
       {
          showHelp(pl);
@@ -592,7 +592,7 @@ int main(int argc, char** argv) {
          CRT_enableDelay();
          break;
       }
-      case 'l':
+      case 'o':         /* list (o)pen files */
       {
          OpenFilesScreen* ts = OpenFilesScreen_new((Process*) Panel_getSelected(panel));
          OpenFilesScreen_run(ts);
@@ -603,9 +603,8 @@ int main(int argc, char** argv) {
          CRT_enableDelay();
          break;
       }
-      case 'S':
-      case 'C':
-      case KEY_F(2):
+      case ':':         /* (:)set */
+      case 'S':         /* :(s)et */
       {
          Setup_run(settings, header);
          // TODO: shouldn't need this, colors should be dynamic
@@ -622,7 +621,7 @@ int main(int argc, char** argv) {
          follow = true;
          continue;
       }
-      case 'u':
+      case 'u':         /* (u)sers */
       {
          Panel* usersPanel = Panel_new(0, 0, 0, 0, LISTITEM_CLASS, true, ListItem_compare);
          Panel_setHeader(usersPanel, "Show processes of:");
@@ -652,8 +651,8 @@ int main(int argc, char** argv) {
          doRecalculate = true;
          break;
       }
-      case KEY_F(9):
-      case 'k':
+      case 'x':         /* vi */
+      case 'K':         /* (K)ill */
       {
          if (!killPanel) {
             killPanel = (Panel*) SignalsPanel_new(0, 0, 0, 0);
@@ -721,16 +720,14 @@ int main(int argc, char** argv) {
          break;
       }
 #endif
-      case KEY_F(10):
+      case 27:          /* Esc */
       case 'q':
          quit = 1;
          break;
       case '<':
       case ',':
-      case KEY_F(18):
       case '>':
       case '.':
-      case KEY_F(6):
       {
          Panel* sortPanel = Panel_new(0, 0, 0, 0, LISTITEM_CLASS, true, ListItem_compare);
          Panel_setHeader(sortPanel, "Sort by");
@@ -754,27 +751,25 @@ int main(int argc, char** argv) {
          refreshTimeout = 0;
          break;
       }
+      case 'i':         /* (i)nvert */
       case 'I':
-      case KEY_F(4):
       {
          refreshTimeout = 0;
          settings->changed = true;
          ProcessList_invertSortOrder(pl);
          break;
       }
-      case KEY_F(8):
       case '[':
       {
          doRefresh = changePriority(panel, 1);
          break;
       }
-      case KEY_F(7):
       case ']':
       {
          doRefresh = changePriority(panel, -1);
          break;
       }
-      case KEY_F(3):
+      case KEY_CTRLN:   /* vi completion */
       case '/':
          incSearchIndex = 0;
          incSearchBuffer[0] = 0;
@@ -782,20 +777,19 @@ int main(int argc, char** argv) {
          FunctionBar_draw(searchBar, incSearchBuffer);
          break;
       case 't':
-      case KEY_F(5):
          refreshTimeout = 0;
          pl->treeView = !pl->treeView;
          ProcessList_expandTree(pl);
          settings->changed = true;
          break;
-      case 'H':
+      case '$':         /* user($) */
          doRecalculate = true;
          refreshTimeout = 0;
          pl->hideUserlandThreads = !pl->hideUserlandThreads;
          pl->hideThreads = pl->hideUserlandThreads;
          settings->changed = true;
          break;
-      case 'K':
+      case '#':         /* root(#) */
          doRecalculate = true;
          refreshTimeout = 0;
          pl->hideKernelThreads = !pl->hideKernelThreads;

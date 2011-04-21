@@ -33,7 +33,7 @@ static HandlerResult ColumnsPanel_eventHandler(Panel* super, int ch) {
    int size = Panel_size(super);
 
    switch(ch) {
-      case KEY_F(7):
+      case 'K':      /* vi */
       case '[':
       case '-':
       {
@@ -42,7 +42,7 @@ static HandlerResult ColumnsPanel_eventHandler(Panel* super, int ch) {
          result = HANDLED;
          break;
       }
-      case KEY_F(8):
+      case 'J':      /* vi */
       case ']':
       case '+':
       {
@@ -51,8 +51,8 @@ static HandlerResult ColumnsPanel_eventHandler(Panel* super, int ch) {
          result = HANDLED;
          break;
       }
-      case KEY_F(9):
-      case KEY_DC:
+      case 'x':      /* vi */
+      case KEY_DC:   /* BS */
       {
          if (selected < size - 1) {
             Panel_remove(super, selected);

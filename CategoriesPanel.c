@@ -78,13 +78,17 @@ static HandlerResult CategoriesPanel_eventHandler(Panel* super, int ch) {
       case EVENT_SETSELECTED:
          result = HANDLED;
          break;
+      case 'k':         /* vi */
       case KEY_UP:
-      case KEY_CTRLP:
+      case 'j':         /* vi */
       case KEY_DOWN:
-      case KEY_CTRLN:
+      case KEY_CTRLF:   /* vi */
       case KEY_NPAGE:
+      case KEY_CTRLB:   /* vi */
       case KEY_PPAGE:
+      case 'g':         /* vi */
       case KEY_HOME:
+      case 'G':         /* vi */
       case KEY_END: {
          int previous = selected;
          Panel_onKey(super, ch);

@@ -35,9 +35,11 @@ static HandlerResult AvailableColumnsPanel_eventHandler(Panel* super, int ch) {
    HandlerResult result = IGNORED;
 
    switch(ch) {
-      case 13:
+      case 'H':         /* vi: match AvailableMeters binding */
+      case ' ':         /* Selection */
+      case 0x0a:        /* \n */
+      case 0x0d:        /* \r */
       case KEY_ENTER:
-      case KEY_F(5):
       {
          int at = Panel_getSelectedIndex(this->columns);
          Panel_insert(this->columns, at, (Object*) ListItem_new(text, 0));

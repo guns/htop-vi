@@ -34,10 +34,9 @@ static HandlerResult MetersPanel_EventHandler(Panel* super, int ch) {
    HandlerResult result = IGNORED;
 
    switch(ch) {
-      case 0x0a:
-      case 0x0d:
+      case 0x0a:        /* \n */
+      case 0x0d:        /* \r */
       case KEY_ENTER:
-      case KEY_F(4):
       case 't':
       {
          Meter* meter = (Meter*) Vector_get(this->meters, selected);
@@ -48,7 +47,7 @@ static HandlerResult MetersPanel_EventHandler(Panel* super, int ch) {
          result = HANDLED;
          break;
       }
-      case KEY_F(7):
+      case 'K':         /* vi */
       case '[':
       case '-':
       {
@@ -57,7 +56,7 @@ static HandlerResult MetersPanel_EventHandler(Panel* super, int ch) {
          result = HANDLED;
          break;
       }
-      case KEY_F(8):
+      case 'J':         /* vi */
       case ']':
       case '+':
       {
@@ -66,8 +65,8 @@ static HandlerResult MetersPanel_EventHandler(Panel* super, int ch) {
          result = HANDLED;
          break;
       }
-      case KEY_F(9):
-      case KEY_DC:
+      case 'x':         /* vi */
+      case KEY_DC:      /* BS */
       {
          if (selected < Vector_size(this->meters)) {
             Vector_remove(this->meters, selected);

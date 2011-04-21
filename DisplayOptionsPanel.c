@@ -34,8 +34,8 @@ static HandlerResult DisplayOptionsPanel_eventHandler(Panel* super, int ch) {
    CheckItem* selected = (CheckItem*) Panel_getSelected(super);
 
    switch(ch) {
-   case 0x0a:
-   case 0x0d:
+   case 0x0a:       /* \n */
+   case 0x0d:       /* \r */
    case KEY_ENTER:
    case KEY_MOUSE:
    case ' ':

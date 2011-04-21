@@ -51,8 +51,8 @@ static HandlerResult ColorsPanel_EventHandler(Panel* super, int ch) {
    int mark = Panel_getSelectedIndex(super);
 
    switch(ch) {
-   case 0x0a:
-   case 0x0d:
+   case 0x0a:       /* \n */
+   case 0x0d:       /* \r */
    case KEY_ENTER:
    case KEY_MOUSE:
    case ' ':

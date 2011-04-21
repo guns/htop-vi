@@ -45,17 +45,13 @@ static HandlerResult AvailableMetersPanel_eventHandler(Panel* super, int ch) {
    HandlerResult result = IGNORED;
 
    switch(ch) {
-      case KEY_F(5):
-      case 'l':
-      case 'L':
+      case 'H': /* vi */
       {
          AvailableMetersPanel_addHeader(header, this->leftPanel, Meter_types[type], param, LEFT_HEADER);
          result = HANDLED;
          break;
       }
-      case KEY_F(6):
-      case 'r':
-      case 'R':
+      case 'L': /* vi */
       {
          AvailableMetersPanel_addHeader(header, this->rightPanel, Meter_types[type], param, RIGHT_HEADER);
          result = HANDLED;

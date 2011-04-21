@@ -137,26 +137,27 @@ void TraceScreen_run(TraceScreen* this) {
       switch(ch) {
       case ERR:
          continue;
-      case KEY_F(5):
+      case ' ':         /* Play/Pause */
          this->tracing = !this->tracing;
          FunctionBar_setLabel(this->bar, KEY_F(5), this->tracing?"Stop Tracing   ":"Resume Tracing ");
          TraceScreen_draw(this);
          break;
+      case 'g':         /* vi */
       case KEY_HOME:
          Panel_setSelected(panel, 0);
          break;
+      case 'G':         /* vi */
       case KEY_END:
          Panel_setSelected(panel, Panel_size(panel)-1);
          break;
-      case 'f':
-      case KEY_F(4):
+      case 'f':         /* (f)ollow */
+      case 'F':         /* (F)orever */
          follow = !follow;
          if (follow)
             Panel_setSelected(panel, Panel_size(panel)-1);
          break;
       case 'q':
-      case 27:
-      case KEY_F(10):
+      case 27:          /* Esc */
          looping = false;
          break;
       case KEY_RESIZE:

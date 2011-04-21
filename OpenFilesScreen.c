@@ -179,7 +179,7 @@ void OpenFilesScreen_run(OpenFilesScreen* this) {
       switch(ch) {
       case ERR:
          continue;
-      case KEY_F(5):
+      case 'r':         /* (r)eload */
          clear();
          OpenFilesScreen_scan(this);
          OpenFilesScreen_draw(this);
@@ -188,9 +188,8 @@ void OpenFilesScreen_run(OpenFilesScreen* this) {
          clear();
          OpenFilesScreen_draw(this);
          break;
-      case 'q':
-      case 27:
-      case KEY_F(10):
+      case 'q':         /* vi */
+      case 27:          /* Esc */
          looping = false;
          break;
       case KEY_RESIZE:
