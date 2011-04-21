@@ -162,12 +162,14 @@ static void showHelp(ProcessList* pl) {
    clear();
 }
 
-static const char* CategoriesFunctions[] = {"      ", "      ", "      ", "      ", "      ", "      ", "      ", "      ", "      ", "Done  ", NULL};
+static const char* CategoriesFunctions[] = {"Done ", NULL};
+static const char* CategoriesKeys[]      = {"q "   , NULL};
+static int         CategoriesEvents[]    = {'q'    , NULL};
 
 static void Setup_run(Settings* settings, const Header* header) {
    ScreenManager* scr = ScreenManager_new(0, header->height, 0, -1, HORIZONTAL, header, true);
    CategoriesPanel* panelCategories = CategoriesPanel_new(settings, scr);
-   ScreenManager_add(scr, (Panel*) panelCategories, FunctionBar_new(CategoriesFunctions, NULL, NULL), 16);
+   ScreenManager_add(scr, (Panel*) panelCategories, FunctionBar_new(CategoriesFunctions, CategoriesKeys, CategoriesEvents), 16);
    CategoriesPanel_makeMetersPage(panelCategories);
    Panel* panelFocus;
    int ch;
@@ -354,13 +356,13 @@ int main(int argc, char** argv) {
    }
    ProcessList_printHeader(pl, Panel_getHeader(panel));
    
-   const char* searchFunctions[] = {"Next  ", "Exit  ", " Search: ", NULL};
-   const char* searchKeys[] = {"F3", "Esc", "  "};
-   int searchEvents[] = {KEY_F(3), 27, ERR};
+   const char* searchFunctions[] = {"Next "  , "Exit ", "Search: ", NULL};
+   const char* searchKeys[]      = {"Ctrl-N" , "q"    , " "};
+   int         searchEvents[]    = {KEY_CTRLN, 'q'    , ERR};
    FunctionBar* searchBar = FunctionBar_new(searchFunctions, searchKeys, searchEvents);
    
-   const char* defaultFunctions[] = {"Help  ", "Setup ", "Search", "Invert", "Tree  ",
-       "SortBy", "Nice -", "Nice +", "Kill  ", "Quit  ", NULL};
+   const char* defaultFunctions[] = {"Help ", "Setup ", "Search ", "Invert ", "Tree ",
+       "SortBy ", "Nice- ", "Nice+ ", "Kill ", "Quit ", NULL};
    FunctionBar* defaultBar = FunctionBar_new(defaultFunctions, NULL, NULL);
 
    ProcessList_scan(pl);

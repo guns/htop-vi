@@ -44,11 +44,9 @@ typedef struct OpenFilesScreen_ {
 
 }*/
 
-static const char* ofsFunctions[] = {"Refresh", "Done   ", NULL};
-
-static const char* ofsKeys[] = {"F5", "Esc"};
-
-static int ofsEvents[] = {KEY_F(5), 27};
+static const char* ofsFunctions[] = {"Refresh ", "Done    ", NULL};
+static const char* ofsKeys[]      = {"r "      , "q "};
+static int         ofsEvents[]    = {'r'       , 'q'};
 
 OpenFilesScreen* OpenFilesScreen_new(Process* process) {
    OpenFilesScreen* this = (OpenFilesScreen*) malloc(sizeof(OpenFilesScreen));

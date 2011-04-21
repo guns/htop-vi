@@ -32,11 +32,9 @@ typedef struct TraceScreen_ {
 
 }*/
 
-static const char* tsFunctions[] = {"AutoScroll ", "Stop Tracing   ", "Done   ", NULL};
-
-static const char* tsKeys[] = {"F4", "F5", "Esc"};
-
-static int tsEvents[] = {KEY_F(4), KEY_F(5), 27};
+static const char* tsFunctions[] = {"AutoScroll ", "Stop Tracing ", "Done ", NULL};
+static const char* tsKeys[]      = {"F "         , "Space "       , "q "};
+static int         tsEvents[]    = {'F'          , ' '            , 'q'};
 
 TraceScreen* TraceScreen_new(Process* process) {
    TraceScreen* this = (TraceScreen*) malloc(sizeof(TraceScreen));
