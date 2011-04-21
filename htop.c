@@ -440,7 +440,7 @@ int main(int argc, char** argv) {
       if (incSearchMode) {
          doRefresh = false;
          int size = Panel_size(panel);
-         if (ch == KEY_F(3)) {
+         if (ch == KEY_CTRLN) {
             int here = Panel_getSelectedIndex(panel);
             int i = here+1;
             while (i != here) {
