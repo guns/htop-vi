@@ -357,6 +357,7 @@ int main(int argc, char** argv) {
    int incSearchIndex = 0;
    incSearchBuffer[0] = 0;
    bool incSearchMode = false;
+   bool incSearchBackwards = false;
 
    ProcessList* pl = NULL;
    UsersTable* ut = UsersTable_new();
@@ -467,10 +468,10 @@ int main(int argc, char** argv) {
       if (incSearchMode) {
          doRefresh = false;
          if (ch == KEY_CTRLN) {
-            searchSelect(true, panel, incSearchBuffer);
+            searchSelect(incSearchBackwards == false, panel, incSearchBuffer);
             continue;
          } else if (ch == KEY_CTRLP) {
-            searchSelect(false, panel, incSearchBuffer);
+            searchSelect(incSearchBackwards == true, panel, incSearchBuffer);
             continue;
          } else if (isprint((char)ch) && (incSearchIndex < INCSEARCH_MAX)) {
             incSearchBuffer[incSearchIndex] = ch;
@@ -485,16 +486,27 @@ int main(int argc, char** argv) {
             continue;
          }
 
-         int size = Panel_size(panel);
          bool found = false;
-         for (int i = 0; i < size; i++) {
+         int  size  = Panel_size(panel);
+         int  i     = incSearchBackwards ? size-1 : 0;
+
+         while (true) {
             Process* p = (Process*) Panel_get(panel, i);
             if (String_contains_i(p->comm, incSearchBuffer)) {
                Panel_setSelected(panel, i);
                found = true;
                break;
             }
+
+            if (incSearchBackwards) {
+               if (i == 0) break;
+               else --i;
+            } else {
+               if (i == size-1) break;
+               else ++i;
+            }
          }
+
          if (found)
             FunctionBar_draw(searchBar, incSearchBuffer);
          else
@@ -790,11 +802,13 @@ int main(int argc, char** argv) {
          break;
       }
       case KEY_CTRLP:   /* vi */
+      case '?':         /* vi */
       case KEY_CTRLN:   /* vi */
       case '/':
          incSearchIndex = 0;
          incSearchBuffer[0] = 0;
          incSearchMode = true;
+         incSearchBackwards = (ch == KEY_CTRLP || ch == '?');
          FunctionBar_draw(searchBar, incSearchBuffer);
          break;
       case 't':
@@ -817,10 +831,10 @@ int main(int argc, char** argv) {
          settings->changed = true;
          break;
       case 'n':
-         searchSelect(true, panel, incSearchBuffer);
+         searchSelect(incSearchBackwards == false, panel, incSearchBuffer);
          break;
       case 'N':
-         searchSelect(false, panel, incSearchBuffer);
+         searchSelect(incSearchBackwards == true, panel, incSearchBuffer);
          break;
       default:
          doRefresh = false;
