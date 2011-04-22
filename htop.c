@@ -151,9 +151,9 @@ static void showHelp(ProcessList* pl) {
    clear();
 }
 
-static const char* CategoriesFunctions[] = {"Done ", NULL};
-static const char* CategoriesKeys[]      = {"q "   , NULL};
-static int         CategoriesEvents[]    = {'q'    , NULL};
+static char* CategoriesFunctions[] = {"Done ", NULL};
+static char* CategoriesKeys[]      = {"q "   , NULL};
+static int   CategoriesEvents[]    = {'q'    , NULL};
 
 static void Setup_run(Settings* settings, int headerHeight) {
    ScreenManager* scr = ScreenManager_new(0, headerHeight, 0, -1, HORIZONTAL, true);
@@ -350,9 +350,9 @@ int main(int argc, char** argv) {
    }
    Panel_setRichHeader(panel, ProcessList_printHeader(pl));
    
-   const char* searchFunctions[] = {"Previous ", "Next "  , "Search: ", NULL};
-   const char* searchKeys[]      = {"Ctrl-P "  , "Ctrl-N ", "  "};
-   int         searchEvents[]    = {KEY_CTRLP  , KEY_CTRLN, ERR};
+   char*        searchFunctions[] = {"Previous ", "Next "  , "Search: ", NULL};
+   char*        searchKeys[]      = {"Ctrl-P "  , "Ctrl-N ", "  "};
+   int          searchEvents[]    = {KEY_CTRLP  , KEY_CTRLN, ERR};
    FunctionBar* searchBar = FunctionBar_new(searchFunctions, searchKeys, searchEvents);
    
    const char* defaultFunctions[] = {"Help ", "Setup ", "Search ", "Next/Prev ", "Invert ",

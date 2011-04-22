@@ -23,29 +23,29 @@ typedef struct CategoriesPanel_ {
 
 }*/
 
-static const char* MetersFunctions[] = {"Type " , "MoveDn ", "MoveUp ", "Remove ", "Done ", NULL};
-static const char* MetersKeys[]      = {"Space ", "J "     , "K "     , "x "     , "q "   , NULL};
-static int         MetersEvents[]    = {' '     , 'J'      , 'K'      , 'x'      , 'q'};
+static char* MetersFunctions[] = {"Type " , "MoveDn ", "MoveUp ", "Remove ", "Done ", NULL};
+static char* MetersKeys[]      = {"Space ", "J "     , "K "     , "x "     , "q "   , NULL};
+static int   MetersEvents[]    = {' '     , 'J'      , 'K'      , 'x'      , 'q'};
 
-static const char* AvailableMetersFunctions[] = {"Add to Left ", "Add to Right ", "Done ", NULL};
-static const char* AvailableMetersKeys[]      = {"H "          , "L "           , "q "   , NULL};
-static int         AvailableMetersEvents[]    = {'H'           , 'L'            , 'q'};
+static char* AvailableMetersFunctions[] = {"Add to Left ", "Add to Right ", "Done ", NULL};
+static char* AvailableMetersKeys[]      = {"H "          , "L "           , "q "   , NULL};
+static int   AvailableMetersEvents[]    = {'H'           , 'L'            , 'q'};
 
-static const char* DisplayOptionsFunctions[] = {"Toggle ", "Done ", NULL};
-static const char* DisplayOptionsKeys[]      = {"Space " , "q "   , NULL};
-static int         DisplayOptionsEvents[]    = {' '      , 'q'};
+static char* DisplayOptionsFunctions[] = {"Toggle ", "Done ", NULL};
+static char* DisplayOptionsKeys[]      = {"Space " , "q "   , NULL};
+static int   DisplayOptionsEvents[]    = {' '      , 'q'};
 
-static const char* ColumnsFunctions[] = {"MoveDn ", "MoveUp ", "Remove ", "Done ", NULL};
-static const char* ColumnsKeys[]      = {"J "     , "K "     , "x "     , "q "   , NULL};
-static int         ColumnsEvents[]    = {'J'      , 'K'      , 'x'      , 'q'};
+static char* ColumnsFunctions[] = {"MoveDn ", "MoveUp ", "Remove ", "Done ", NULL};
+static char* ColumnsKeys[]      = {"J "     , "K "     , "x "     , "q "   , NULL};
+static int   ColumnsEvents[]    = {'J'      , 'K'      , 'x'      , 'q'};
 
-static const char* ColorsFunctions[] = {"Select ", "Done ", NULL};
-static const char* ColorsKeys[]      = {"Space " , "q "   , NULL};
-static int         ColorsEvents[]    = {' '      , 'q'};
+static char* ColorsFunctions[] = {"Select ", "Done ", NULL};
+static char* ColorsKeys[]      = {"Space " , "q "   , NULL};
+static int   ColorsEvents[]    = {' '      , 'q'};
 
-static const char* AvailableColumnsFunctions[] = {"Add "  , "Done ", NULL};
-static const char* AvailableColumnsKeys[]      = {"Space ", "q "   , NULL};
-static int         AvailableColumnsEvents[]    = {' '     , 'q'};
+static char* AvailableColumnsFunctions[] = {"Add "  , "Done ", NULL};
+static char* AvailableColumnsKeys[]      = {"Space ", "q "   , NULL};
+static int   AvailableColumnsEvents[]    = {' '     , 'q'};
 
 static void CategoriesPanel_delete(Object* object) {
    Panel* super = (Panel*) object;
