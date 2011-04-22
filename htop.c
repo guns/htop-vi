@@ -813,6 +813,12 @@ int main(int argc, char** argv) {
          pl->hideKernelThreads = !pl->hideKernelThreads;
          settings->changed = true;
          break;
+      case 'n':
+         searchSelect(true, panel, incSearchBuffer);
+         break;
+      case 'N':
+         searchSelect(false, panel, incSearchBuffer);
+         break;
       default:
          doRefresh = false;
          refreshTimeout = resetRefreshTimeout;
