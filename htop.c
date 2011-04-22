@@ -480,7 +480,7 @@ int main(int argc, char** argv) {
             searchSelect(incSearchForward, true, panel, incSearchBuffer);
             continue;
          } else if (ch == KEY_CTRLP) {
-            searchSelect(incSearchForward, true, panel, incSearchBuffer);
+            searchSelect(!incSearchForward, true, panel, incSearchBuffer);
             continue;
          } else if (isprint((char)ch) && (incSearchIndex < INCSEARCH_MAX)) {
             incSearchBuffer[incSearchIndex] = ch;
@@ -824,7 +824,7 @@ int main(int argc, char** argv) {
          searchSelect(incSearchForward, true, panel, incSearchBuffer);
          break;
       case 'N':
-         searchSelect(incSearchForward, true, panel, incSearchBuffer);
+         searchSelect(!incSearchForward, true, panel, incSearchBuffer);
          break;
       default:
          doRefresh = false;
