@@ -48,6 +48,3 @@ hardened-debug:
  
 debuglite:
 	$(MAKE) all CFLAGS="-ggdb -DDEBUGLITE"
-
-install-exec-hook:
-	chmod 4755 $(DESTDIR)$(bindir)/htop
