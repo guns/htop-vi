@@ -16,8 +16,8 @@ static HandlerResult AffinityPanel_eventHandler(Panel* this, int ch) {
       CheckItem_set(selected, ! (CheckItem_get(selected)) );
       result = HANDLED;
       break;
-   case 0x0a:
-   case 0x0d:
+   case 0x0a:       /* \n */
+   case 0x0d:       /* \r */
    case KEY_ENTER:
       result = BREAK_LOOP;
       break;

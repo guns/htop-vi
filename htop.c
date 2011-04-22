@@ -104,43 +104,43 @@ static void showHelp(ProcessList* pl) {
       mvaddstr(7, 0, "In monochrome, meters are displayed through different chars, in order: |#*@$%&");
    }
    mvaddstr( 8, 0, " Status: R: running; S: sleeping; T: traced/stopped; Z: zombie; D: disk sleep");
-   mvaddstr( 9, 0, " Arrows: scroll process list             F5 t: tree view");
+   mvaddstr( 9, 0, "   hjkl: scroll process list                t: tree view");
    mvaddstr(10, 0, " Digits: incremental PID search             u: show processes of a single user");
-   mvaddstr(11, 0, "   F3 /: incremental name search            H: hide/show user threads");
-   mvaddstr(12, 0, "                                            K: hide/show kernel threads");
+   mvaddstr(11, 0, "    / ?: incremental name search            $: hide/show user threads");
+   mvaddstr(12, 0, "                                            #: hide/show kernel threads");
    mvaddstr(13, 0, "  Space: tag processes                      F: cursor follows process");
    mvaddstr(14, 0, "      U: untag all processes");
-   mvaddstr(15, 0, "   F9 k: kill process/tagged processes      P: sort by CPU%");
-   mvaddstr(16, 0, " - ] F7: higher priority (root only)        M: sort by MEM%");
-   mvaddstr(17, 0, " + [ F8: lower priority (+ nice)            T: sort by TIME");
+   mvaddstr(15, 0, "    K x: kill process/tagged processes    C P: sort by CPU%");
+   mvaddstr(16, 0, "      ]: higher priority (root only)        M: sort by MEM%");
+   mvaddstr(17, 0, "      [: lower priority (+ nice)            T: sort by TIME");
 #ifdef HAVE_PLPA
    if (pl->processorCount > 1)
-      mvaddstr(18, 0, "      a: set CPU affinity                F4 I: invert sort order");
+      mvaddstr(18, 0, "      a: set CPU affinity                 i I: invert sort order");
    else
 #endif
-      mvaddstr(18, 0, "                                         F4 I: invert sort order");
-   mvaddstr(19, 0, "   F2 S: setup                           F6 >: select sort column");
-   mvaddstr(20, 0, "   F1 h: show this help screen              l: list open files with lsof");
-   mvaddstr(21, 0, "  F10 q: quit                               s: trace syscalls with strace");
+      mvaddstr(18, 0, "                                          i I: invert sort order");
+   mvaddstr(19, 0, "    : S: setup                        , < . >: select sort column");
+   mvaddstr(20, 0, "      H: show this help screen              o: list open files with lsof");
+   mvaddstr(21, 0, "  Esc q: quit                               s: trace syscalls with strace");
 
    attrset(CRT_colors[HELP_BOLD]);
-   mvaddstr( 9, 0, " Arrows"); mvaddstr( 9,40, " F5 t");
+   mvaddstr( 9, 0, "   hjkl"); mvaddstr( 9,40, "    t");
    mvaddstr(10, 0, " Digits"); mvaddstr(10,40, "    u");
-   mvaddstr(11, 0, "   F3 /"); mvaddstr(11,40, "    H");
-                               mvaddstr(12,40, "    K");
+   mvaddstr(11, 0, "    / ?"); mvaddstr(11,40, "    $");
+                               mvaddstr(12,40, "    #");
    mvaddstr(13, 0, "  Space"); mvaddstr(13,40, "    F");
    mvaddstr(14, 0, "      U");
-   mvaddstr(15, 0, "   F9 k"); mvaddstr(15,40, "    P");
-   mvaddstr(16, 0, " + [ F7"); mvaddstr(16,40, "    M");
-   mvaddstr(17, 0, " - ] F8"); mvaddstr(17,40, "    T");
-                               mvaddstr(18,40, " F4 I");
+   mvaddstr(15, 0, "    K x"); mvaddstr(15,40, "  C P");
+   mvaddstr(16, 0, "      ]"); mvaddstr(16,40, "    M");
+   mvaddstr(17, 0, "      ["); mvaddstr(17,40, "    T");
+                               mvaddstr(18,40, "  i I");
 #if HAVE_PLPA
    if (pl->processorCount > 1)
-      mvaddstr(18, 0, "      a:");
+      mvaddstr(18, 0, "      a");
 #endif
-   mvaddstr(19, 0, "   F2 S"); mvaddstr(19,40, " F6 >");
-   mvaddstr(20, 0, "   F1 h"); mvaddstr(20,40, "    l");
-   mvaddstr(21, 0, "  F10 q"); mvaddstr(21,40, "    s");
+   mvaddstr(19, 0, "    : S"); mvaddstr(19,38, ", < . >");
+   mvaddstr(20, 0, "      H"); mvaddstr(20,40, "    o");
+   mvaddstr(21, 0, "  Esc q"); mvaddstr(21,40, "    s");
    attrset(CRT_colors[DEFAULT_COLOR]);
 
    attrset(CRT_colors[HELP_BOLD]);
@@ -151,12 +151,14 @@ static void showHelp(ProcessList* pl) {
    clear();
 }
 
-static char* CategoriesFunctions[10] = {"      ", "      ", "      ", "      ", "      ", "      ", "      ", "      ", "      ", "Done  "};
+static const char* CategoriesFunctions[] = {"Done ", NULL};
+static const char* CategoriesKeys[]      = {"q "   , NULL};
+static int         CategoriesEvents[]    = {'q'    , NULL};
 
 static void Setup_run(Settings* settings, int headerHeight) {
    ScreenManager* scr = ScreenManager_new(0, headerHeight, 0, -1, HORIZONTAL, true);
    CategoriesPanel* panelCategories = CategoriesPanel_new(settings, scr);
-   ScreenManager_add(scr, (Panel*) panelCategories, FunctionBar_new(CategoriesFunctions, NULL, NULL), 16);
+   ScreenManager_add(scr, (Panel*) panelCategories, FunctionBar_new(CategoriesFunctions, CategoriesKeys, CategoriesEvents), 16);
    CategoriesPanel_makeMetersPage(panelCategories);
    Panel* panelFocus;
    int ch;
@@ -190,7 +192,7 @@ static HandlerResult pickWithEnter(Panel* panel, int ch) {
 }
 
 static Object* pickFromVector(Panel* panel, Panel* list, int x, int y, char** keyLabels, FunctionBar* prevBar) {
-   char* fuKeys[2] = {"Enter", "Esc"};
+   const char* fuKeys[] = {"Enter ", "q ", NULL};
    int fuEvents[2] = {13, 27};
    if (!list->eventHandler)
       Panel_setEventHandler(list, pickWithEnter);
@@ -230,6 +232,33 @@ static inline void setSortKey(ProcessList* pl, ProcessField sortKey, Panel* pane
    pl->treeView = false;
    settings->changed = true;
    Panel_setRichHeader(panel, ProcessList_printHeader(pl));
+}
+
+static void searchSelect(bool next, Panel *panel, char *incSearchBuffer) {
+   /* bail if search buffer is empty */
+   if (!incSearchBuffer[0])
+      return;
+
+   int size = Panel_size(panel);
+   int here = Panel_getSelectedIndex(panel);
+   int i    = next ? here + 1 : here - 1;
+
+   while (i != here) {
+      /* wrap around */
+      if (next) {
+         if (i == size) i = 0;
+      } else {
+         if (i == -1) i = size - 1;
+      }
+
+      Process* p = (Process *)Panel_get(panel, i);
+      if (String_contains_i(p->comm, incSearchBuffer)) {
+         Panel_setSelected(panel, i);
+         break;
+      }
+
+      next ? ++i : --i;
+   }
 }
 
 int main(int argc, char** argv) {
@@ -296,6 +325,7 @@ int main(int argc, char** argv) {
    int incSearchIndex = 0;
    incSearchBuffer[0] = 0;
    bool incSearchMode = false;
+   bool incSearchBackwards = false;
 
    ProcessList* pl = NULL;
    UsersTable* ut = UsersTable_new();
@@ -320,13 +350,13 @@ int main(int argc, char** argv) {
    }
    Panel_setRichHeader(panel, ProcessList_printHeader(pl));
    
-   char* searchFunctions[] = {"Next  ", "Exit  ", " Search: ", NULL};
-   char* searchKeys[] = {"F3", "Esc", "  "};
-   int searchEvents[] = {KEY_F(3), 27, ERR};
+   const char* searchFunctions[] = {"Previous ", "Next "  , "Search: ", NULL};
+   const char* searchKeys[]      = {"Ctrl-P "  , "Ctrl-N ", "  "};
+   int         searchEvents[]    = {KEY_CTRLP  , KEY_CTRLN, ERR};
    FunctionBar* searchBar = FunctionBar_new(searchFunctions, searchKeys, searchEvents);
    
-   char* defaultFunctions[] = {"Help  ", "Setup ", "Search", "Invert", "Tree  ",
-       "SortBy", "Nice -", "Nice +", "Kill  ", "Quit  ", NULL};
+   const char* defaultFunctions[] = {"Help ", "Setup ", "Search ", "Next/Prev ", "Invert ",
+                                     "Tree ", "SortBy ", "Nice+- ", "Kill ", "Quit ", NULL};
    FunctionBar* defaultBar = FunctionBar_new(defaultFunctions, NULL, NULL);
 
    ProcessList_scan(pl);
@@ -402,20 +432,11 @@ int main(int argc, char** argv) {
 
       if (incSearchMode) {
          doRefresh = false;
-         if (ch == KEY_F(3)) {
-            int here = Panel_getSelectedIndex(panel);
-            int size = ProcessList_size(pl);
-            int i = here+1;
-            while (i != here) {
-               if (i == size)
-                  i = 0;
-               Process* p = ProcessList_get(pl, i);
-               if (String_contains_i(p->comm, incSearchBuffer)) {
-                  Panel_setSelected(panel, i);
-                  break;
-               }
-               i++;
-            }
+         if (ch == KEY_CTRLN) {
+            searchSelect(incSearchBackwards == false, panel, incSearchBuffer);
+            continue;
+         } else if (ch == KEY_CTRLP) {
+            searchSelect(incSearchBackwards == true, panel, incSearchBuffer);
             continue;
          } else if (isprint((char)ch) && (incSearchIndex < INCSEARCH_MAX)) {
             incSearchBuffer[incSearchIndex] = ch;
@@ -431,14 +452,26 @@ int main(int argc, char** argv) {
          }
 
          bool found = false;
-         for (int i = 0; i < ProcessList_size(pl); i++) {
+         int  size  = Panel_size(panel);
+         int  i     = incSearchBackwards ? size-1 : 0;
+
+         while (true) {
             Process* p = ProcessList_get(pl, i);
             if (String_contains_i(p->comm, incSearchBuffer)) {
                Panel_setSelected(panel, i);
                found = true;
                break;
             }
+
+            if (incSearchBackwards) {
+               if (i == 0) break;
+               else --i;
+            } else {
+               if (i == size-1) break;
+               else ++i;
+            }
          }
+
          if (found)
             FunctionBar_draw(searchBar, incSearchBuffer);
          else
@@ -518,14 +551,14 @@ int main(int argc, char** argv) {
          doRefresh = true;
          break;
       }
+      case 'C':         /* (C)PU */
       case 'P':
       {
          refreshTimeout = 0;
          setSortKey(pl, PERCENT_CPU, panel, settings);
          break;
       }
-      case KEY_F(1):
-      case 'h':
+      case 'H':         /* (H)elp */
       {
          showHelp(pl);
          FunctionBar_draw(defaultBar, NULL);
@@ -557,7 +590,7 @@ int main(int argc, char** argv) {
          CRT_enableDelay();
          break;
       }
-      case 'l':
+      case 'o':         /* list (o)pen files */
       {
          OpenFilesScreen* ts = OpenFilesScreen_new((Process*) Panel_getSelected(panel));
          OpenFilesScreen_run(ts);
@@ -568,9 +601,8 @@ int main(int argc, char** argv) {
          CRT_enableDelay();
          break;
       }
-      case 'S':
-      case 'C':
-      case KEY_F(2):
+      case ':':         /* (:)set */
+      case 'S':         /* :(s)et */
       {
          Setup_run(settings, headerHeight);
          // TODO: shouldn't need this, colors should be dynamic
@@ -587,7 +619,7 @@ int main(int argc, char** argv) {
          follow = true;
          continue;
       }
-      case 'u':
+      case 'u':         /* (u)sers */
       {
          Panel* usersPanel = Panel_new(0, 0, 0, 0, LISTITEM_CLASS, true, ListItem_compare);
          Panel_setHeader(usersPanel, "Show processes of:");
@@ -595,7 +627,7 @@ int main(int argc, char** argv) {
          Vector_sort(usersPanel->items);
          ListItem* allUsers = ListItem_new("All users", -1);
          Panel_insert(usersPanel, 0, (Object*) allUsers);
-         char* fuFunctions[] = {"Show    ", "Cancel ", NULL};
+         const char* fuFunctions[] = {"Show ", "Cancel ", NULL};
          ListItem* picked = (ListItem*) pickFromVector(panel, usersPanel, 20, headerHeight, fuFunctions, defaultBar);
          if (picked) {
             if (picked == allUsers) {
@@ -607,14 +639,14 @@ int main(int argc, char** argv) {
          }
          break;
       }
-      case KEY_F(9):
-      case 'k':
+      case 'x':         /* vi */
+      case 'K':         /* (K)ill */
       {
          if (!killPanel) {
             killPanel = (Panel*) SignalsPanel_new(0, 0, 0, 0);
          }
          SignalsPanel_reset((SignalsPanel*) killPanel);
-         char* fuFunctions[] = {"Send  ", "Cancel ", NULL};
+         const char* fuFunctions[] = {"Send ", "Cancel ", NULL};
          Signal* signal = (Signal*) pickFromVector(panel, killPanel, 15, headerHeight, fuFunctions, defaultBar);
          if (signal) {
             if (signal->number != 0) {
@@ -651,7 +683,7 @@ int main(int argc, char** argv) {
          
          Panel* affinityPanel = AffinityPanel_new(pl->processorCount, curr);
 
-         char* fuFunctions[2] = {"Set    ", "Cancel "};
+         const char* fuFunctions[] = {"Set ", "Cancel ", NULL};
          void* set = pickFromVector(panel, affinityPanel, 15, headerHeight, fuFunctions, defaultBar);
          if (set) {
             unsigned long new = AffinityPanel_getAffinity(affinityPanel);
@@ -677,20 +709,18 @@ int main(int argc, char** argv) {
          break;
       }
 #endif
-      case KEY_F(10):
+      case 27:          /* Esc */
       case 'q':
          quit = 1;
          break;
       case '<':
       case ',':
-      case KEY_F(18):
       case '>':
       case '.':
-      case KEY_F(6):
       {
          Panel* sortPanel = Panel_new(0, 0, 0, 0, LISTITEM_CLASS, true, ListItem_compare);
          Panel_setHeader(sortPanel, "Sort by");
-         char* fuFunctions[2] = {"Sort  ", "Cancel "};
+         const char* fuFunctions[] = {"Sort ", "Cancel ", NULL};
          ProcessField* fields = pl->fields;
          for (int i = 0; fields[i]; i++) {
             char* name = String_trim(Process_fieldTitles[fields[i]]);
@@ -710,54 +740,57 @@ int main(int argc, char** argv) {
          refreshTimeout = 0;
          break;
       }
+      case 'i':         /* (i)nvert */
       case 'I':
-      case KEY_F(4):
       {
          refreshTimeout = 0;
          settings->changed = true;
          ProcessList_invertSortOrder(pl);
          break;
       }
-      case KEY_F(8):
       case '[':
-      case '=':
-      case '+':
       {
          doRefresh = changePriority(panel, 1);
          break;
       }
-      case KEY_F(7):
       case ']':
-      case '-':
       {
          doRefresh = changePriority(panel, -1);
          break;
       }
-      case KEY_F(3):
+      case KEY_CTRLP:   /* vi */
+      case '?':         /* vi */
+      case KEY_CTRLN:   /* vi */
       case '/':
          incSearchIndex = 0;
          incSearchBuffer[0] = 0;
          incSearchMode = true;
+         incSearchBackwards = (ch == KEY_CTRLP || ch == '?');
          FunctionBar_draw(searchBar, incSearchBuffer);
          break;
       case 't':
-      case KEY_F(5):
          refreshTimeout = 0;
          pl->treeView = !pl->treeView;
          settings->changed = true;
          break;
-      case 'H':
+      case '$':         /* user($) */
          doRecalculate = true;
          refreshTimeout = 0;
          pl->hideUserlandThreads = !pl->hideUserlandThreads;
          pl->hideThreads = pl->hideUserlandThreads;
          settings->changed = true;
          break;
-      case 'K':
+      case '#':         /* root(#) */
          doRecalculate = true;
          refreshTimeout = 0;
          pl->hideKernelThreads = !pl->hideKernelThreads;
          settings->changed = true;
+         break;
+      case 'n':
+         searchSelect(incSearchBackwards == false, panel, incSearchBuffer);
+         break;
+      case 'N':
+         searchSelect(incSearchBackwards == true, panel, incSearchBuffer);
          break;
       default:
          doRefresh = false;

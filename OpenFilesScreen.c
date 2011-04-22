@@ -43,11 +43,9 @@ typedef struct OpenFilesScreen_ {
 
 }*/
 
-static char* tbFunctions[] = {"Refresh", "Done   ", NULL};
-
-static char* tbKeys[] = {"F5", "Esc"};
-
-static int tbEvents[] = {KEY_F(5), 27};
+static const char* ofsFunctions[] = {"Refresh ", "Done    ", NULL};
+static const char* ofsKeys[]      = {"r "      , "q "};
+static int         ofsEvents[]    = {'r'       , 'q'};
 
 OpenFilesScreen* OpenFilesScreen_new(Process* process) {
    OpenFilesScreen* this = (OpenFilesScreen*) malloc(sizeof(OpenFilesScreen));
@@ -169,7 +167,7 @@ void OpenFilesScreen_run(OpenFilesScreen* this) {
       switch(ch) {
       case ERR:
          continue;
-      case KEY_F(5):
+      case 'r':         /* (r)eload */
          clear();
          OpenFilesScreen_scan(this);
          OpenFilesScreen_draw(this);
@@ -178,9 +176,8 @@ void OpenFilesScreen_run(OpenFilesScreen* this) {
          clear();
          OpenFilesScreen_draw(this);
          break;
-      case 'q':
-      case 27:
-      case KEY_F(10):
+      case 'q':         /* vi */
+      case 27:          /* Esc */
          looping = false;
          break;
       case KEY_RESIZE:

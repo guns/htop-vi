@@ -329,10 +329,12 @@ void Panel_draw(Panel* this, bool focus) {
 bool Panel_onKey(Panel* this, int key) {
    assert (this != NULL);
    switch (key) {
+   case 'j':         /* vi */
    case KEY_DOWN:
       if (this->selected + 1 < Vector_size(this->items))
          this->selected++;
       return true;
+   case 'k':         /* vi */
    case KEY_UP:
       if (this->selected > 0)
          this->selected--;
@@ -359,16 +361,19 @@ bool Panel_onKey(Panel* this, int key) {
       }
       return true;
    #endif
+   case 'h':         /* vi */
    case KEY_LEFT:
       if (this->scrollH > 0) {
          this->scrollH -= 5;
          this->needsRedraw = true;
       }
       return true;
+   case 'l':         /* vi */
    case KEY_RIGHT:
       this->scrollH += 5;
       this->needsRedraw = true;
       return true;
+   case KEY_CTRLB:   /* vi */
    case KEY_PPAGE:
       this->selected -= (this->h - 1);
       this->scrollV -= (this->h - 1);
@@ -378,6 +383,7 @@ bool Panel_onKey(Panel* this, int key) {
          this->scrollV = 0;
       this->needsRedraw = true;
       return true;
+   case KEY_CTRLF:   /* vi */
    case KEY_NPAGE:
       this->selected += (this->h - 1);
       int size = Vector_size(this->items);
@@ -388,9 +394,11 @@ bool Panel_onKey(Panel* this, int key) {
          this->scrollV = MAX(0, size - this->h - 1);
       this->needsRedraw = true;
       return true;
+   case 'g':         /* vi */
    case KEY_HOME:
       this->selected = 0;
       return true;
+   case 'G':         /* vi */
    case KEY_END:
       this->selected = Vector_size(this->items) - 1;
       return true;

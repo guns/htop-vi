@@ -183,6 +183,7 @@ void ScreenManager_run(ScreenManager* this, Panel** lastFocus, int* lastKey) {
          ScreenManager_resize(this, this->x1, this->y1, this->x2, this->y2);
          continue;
       }
+      case 'h':         /* vi */
       case KEY_LEFT:
          tryLeft:
          if (focus > 0)
@@ -191,8 +192,8 @@ void ScreenManager_run(ScreenManager* this, Panel** lastFocus, int* lastKey) {
          if (Panel_size(panelFocus) == 0 && focus > 0)
             goto tryLeft;
          break;
+      case 'l':         /* vi */
       case KEY_RIGHT:
-      case 9:
          tryRight:
          if (focus < this->itemCount - 1)
             focus++;
@@ -200,9 +201,9 @@ void ScreenManager_run(ScreenManager* this, Panel** lastFocus, int* lastKey) {
          if (Panel_size(panelFocus) == 0 && focus < this->itemCount - 1)
             goto tryRight;
          break;
-      case KEY_F(10):
+      case 'Q':         /* vi: often remapped to :q! */
       case 'q':
-      case 27:
+      case 27:          /* Esc */
          quit = true;
          continue;
       default:

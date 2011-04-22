@@ -34,7 +34,7 @@ Sort by this column (use --sort-key help for a column list)
 The following commands are supported:
 .LP 
 .TP 5
-.B Arrows, PgUP, PgDn, Home, End
+.B hjkl, Ctrl-B, Ctrl-F, g, G, Arrows, PgUP, PgDn, Home, End
 Scroll process list.
 .TP
 .B Space
@@ -50,50 +50,50 @@ Trace process system calls: if strace(1) is installed, pressing this key
 will attach it to the currently selected process, presenting a live
 update of system calls issued by the process.
 .TP
-.B l
+.B o
 Display open files for a process: if lsof(1) is installed, pressing this key
 will display the list of file descriptors opened by the process.
 .TP
-.B F1, h
+.B H
 Help screen
 .TP
-.B F2, S
+.B :, S
 Setup screen. There you can configure meters displayed on the top side
 of the screen, as well as set various display options, choose among
 color schemes and select the layout of the displayed columns.
 .TP
-.B F3, /
+.B Ctrl-N, /
 Incremental process search: type in part of a process command line and
 the selection highlight will be moved to it. While in search mode,
 pressing this key will cycle through matching occurrences.
 .TP
-.B F4, I
+.B i, I
 Invert sort order: if sort order is increasing, switch to decreasing,
 and vice-versa.
 .TP
-.B F5, t
+.B t
 Tree view: organize processes by parenthood, and layout the relations
 between them as a tree. Toggling the key will switch between tree and
 your previously selected sort view. Selecting a sort view will exit
 tree view.
 .TP
-.B F6, >
+.B <, >
 Select field for sorting. The sort field is indicated by a
 highlight in the header.
 .TP
-.B F7, ], -
+.B ], -
 Increase selected process priority (subtract from 'nice' value).
 This can be done by the superuser only.
 .TP
-.B F8, [, +
+.B [, +
 Decrease selected process priority (add to 'nice' value)
 .TP
-.B F9, k
+.B x, K
 "Kill" process: sends a signal which is selected in a menu, to one or a group
 of processes. If processes were tagged, sends the signal to all tagged processes.
 If none is tagged, sends to the currently selected process.
 .TP
-.B F10, q
+.B Q, q
 Quit
 .TP
 .B a (on multiprocessor machines)
@@ -105,23 +105,23 @@ Show only processes owned by a specified user.
 .B M
 Sort by memory usage (top compatibility key).
 .TP
-.B P
+.B C, P
 Sort by processor usage (top compatibility key).
 .TP
 .B T
 Sort by time (top compatibility key).
 .TP
-.B F
+.B f, F
 "Follow" process: if the sort order causes the currently selected process
 to move in the list, make the selection bar follow it. This is useful for
 monitoring a process: this way, you can keep a process always visible on
 screen. When a movement key is used, "follow" loses effect.
 .TP
-.B K
+.B #
 Hide kernel threads: prevent the threads belonging the kernel to be
 displayed in the process list. (This is a toggle key.)
 .TP
-.B H
+.B $
 Hide user threads: on systems that represent them differently than ordinary
 processes (such as recent NPTL-based systems), this can hide threads from
 userspace processes in the process list. (This is a toggle key.)

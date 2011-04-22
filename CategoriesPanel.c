@@ -23,17 +23,29 @@ typedef struct CategoriesPanel_ {
 
 }*/
 
-static char* MetersFunctions[] = {"      ", "      ", "      ", "Type  ", "      ", "      ", "MoveUp", "MoveDn", "Remove", "Done  ", NULL};
+static const char* MetersFunctions[] = {"Type " , "MoveDn ", "MoveUp ", "Remove ", "Done ", NULL};
+static const char* MetersKeys[]      = {"Space ", "J "     , "K "     , "x "     , "q "   , NULL};
+static int         MetersEvents[]    = {' '     , 'J'      , 'K'      , 'x'      , 'q'};
 
-static char* AvailableMetersFunctions[] = {"      ", "      ", "      ", "      ", "Add L ", "Add R ", "      ", "      ", "      ", "Done  ", NULL};
+static const char* AvailableMetersFunctions[] = {"Add to Left ", "Add to Right ", "Done ", NULL};
+static const char* AvailableMetersKeys[]      = {"H "          , "L "           , "q "   , NULL};
+static int         AvailableMetersEvents[]    = {'H'           , 'L'            , 'q'};
 
-static char* DisplayOptionsFunctions[] = {"      ", "      ", "      ", "      ", "      ", "      ", "      ", "      ", "      ", "Done  ", NULL};
+static const char* DisplayOptionsFunctions[] = {"Toggle ", "Done ", NULL};
+static const char* DisplayOptionsKeys[]      = {"Space " , "q "   , NULL};
+static int         DisplayOptionsEvents[]    = {' '      , 'q'};
 
-static char* ColumnsFunctions[] = {"      ", "      ", "      ", "      ", "      ", "      ", "MoveUp", "MoveDn", "Remove", "Done  ", NULL};
+static const char* ColumnsFunctions[] = {"MoveDn ", "MoveUp ", "Remove ", "Done ", NULL};
+static const char* ColumnsKeys[]      = {"J "     , "K "     , "x "     , "q "   , NULL};
+static int         ColumnsEvents[]    = {'J'      , 'K'      , 'x'      , 'q'};
 
-static char* ColorsFunctions[] = {"      ", "      ", "      ", "      ", "      ", "      ", "      ", "      ", "      ", "Done  ", NULL};
+static const char* ColorsFunctions[] = {"Select ", "Done ", NULL};
+static const char* ColorsKeys[]      = {"Space " , "q "   , NULL};
+static int         ColorsEvents[]    = {' '      , 'q'};
 
-static char* AvailableColumnsFunctions[] = {"      ", "      ", "      ", "      ", "Add   ", "      ", "      ", "      ", "      ", "Done  ", NULL};
+static const char* AvailableColumnsFunctions[] = {"Add "  , "Done ", NULL};
+static const char* AvailableColumnsKeys[]      = {"Space ", "q "   , NULL};
+static int         AvailableColumnsEvents[]    = {' '     , 'q'};
 
 static void CategoriesPanel_delete(Object* object) {
    Panel* super = (Panel*) object;
@@ -46,26 +58,26 @@ void CategoriesPanel_makeMetersPage(CategoriesPanel* this) {
    Panel* leftMeters = (Panel*) MetersPanel_new(this->settings, "Left column", this->settings->header->leftMeters, this->scr);
    Panel* rightMeters = (Panel*) MetersPanel_new(this->settings, "Right column", this->settings->header->rightMeters, this->scr);
    Panel* availableMeters = (Panel*) AvailableMetersPanel_new(this->settings, leftMeters, rightMeters, this->scr);
-   ScreenManager_add(this->scr, leftMeters, FunctionBar_new(MetersFunctions, NULL, NULL), 20);
-   ScreenManager_add(this->scr, rightMeters, FunctionBar_new(MetersFunctions, NULL, NULL), 20);
-   ScreenManager_add(this->scr, availableMeters, FunctionBar_new(AvailableMetersFunctions, NULL, NULL), -1);
+   ScreenManager_add(this->scr, leftMeters, FunctionBar_new(MetersFunctions, MetersKeys, MetersEvents), 20);
+   ScreenManager_add(this->scr, rightMeters, FunctionBar_new(MetersFunctions, MetersKeys, MetersEvents), 20);
+   ScreenManager_add(this->scr, availableMeters, FunctionBar_new(AvailableMetersFunctions, AvailableMetersKeys, AvailableMetersEvents), -1);
 }
 
 static void CategoriesPanel_makeDisplayOptionsPage(CategoriesPanel* this) {
    Panel* displayOptions = (Panel*) DisplayOptionsPanel_new(this->settings, this->scr);
-   ScreenManager_add(this->scr, displayOptions, FunctionBar_new(DisplayOptionsFunctions, NULL, NULL), -1);
+   ScreenManager_add(this->scr, displayOptions, FunctionBar_new(DisplayOptionsFunctions, DisplayOptionsKeys, DisplayOptionsEvents), -1);
 }
 
 static void CategoriesPanel_makeColorsPage(CategoriesPanel* this) {
    Panel* colors = (Panel*) ColorsPanel_new(this->settings, this->scr);
-   ScreenManager_add(this->scr, colors, FunctionBar_new(ColorsFunctions, NULL, NULL), -1);
+   ScreenManager_add(this->scr, colors, FunctionBar_new(ColorsFunctions, ColorsKeys, ColorsEvents), -1);
 }
 
 static void CategoriesPanel_makeColumnsPage(CategoriesPanel* this) {
    Panel* columns = (Panel*) ColumnsPanel_new(this->settings, this->scr);
    Panel* availableColumns = (Panel*) AvailableColumnsPanel_new(this->settings, columns, this->scr);
-   ScreenManager_add(this->scr, columns, FunctionBar_new(ColumnsFunctions, NULL, NULL), 20);
-   ScreenManager_add(this->scr, availableColumns, FunctionBar_new(AvailableColumnsFunctions, NULL, NULL), -1);
+   ScreenManager_add(this->scr, columns, FunctionBar_new(ColumnsFunctions, ColumnsKeys, ColumnsEvents), 20);
+   ScreenManager_add(this->scr, availableColumns, FunctionBar_new(AvailableColumnsFunctions, AvailableColumnsKeys, AvailableColumnsEvents), -1);
 }
 
 static HandlerResult CategoriesPanel_eventHandler(Panel* super, int ch) {
@@ -78,11 +90,17 @@ static HandlerResult CategoriesPanel_eventHandler(Panel* super, int ch) {
       case EVENT_SETSELECTED:
          result = HANDLED;
          break;
+      case 'k':         /* vi */
       case KEY_UP:
+      case 'j':         /* vi */
       case KEY_DOWN:
+      case KEY_CTRLF:   /* vi */
       case KEY_NPAGE:
+      case KEY_CTRLB:   /* vi */
       case KEY_PPAGE:
+      case 'g':         /* vi */
       case KEY_HOME:
+      case 'G':         /* vi */
       case KEY_END: {
          int previous = selected;
          Panel_onKey(super, ch);
