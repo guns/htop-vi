@@ -23,13 +23,13 @@ typedef struct CategoriesPanel_ {
 
 }*/
 
-static const char* MetersFunctions[] = {"Type ", "MoveDn ", "MoveUp ", "Remove ", "Done ", NULL};
-static const char* MetersKeys[]      = {"t "   , "J "     , "K "     , "x "     , "q "   , NULL};
-static int         MetersEvents[]    = {' '    , 'J'      , 'K'      , 'x'      , 'q'};
+static const char* MetersFunctions[] = {"Type " , "MoveDn ", "MoveUp ", "Remove ", "Done ", NULL};
+static const char* MetersKeys[]      = {"Space ", "J "     , "K "     , "x "     , "q "   , NULL};
+static int         MetersEvents[]    = {' '     , 'J'      , 'K'      , 'x'      , 'q'};
 
-static const char* AvailableMetersFunctions[] = {"Add L ", "Add R ", "Done ", NULL};
-static const char* AvailableMetersKeys[]      = {"H "    , "L "    , "q "   , NULL};
-static int         AvailableMetersEvents[]    = {'H'     , 'L'     , 'q'};
+static const char* AvailableMetersFunctions[] = {"Add to Left ", "Add to Right ", "Done ", NULL};
+static const char* AvailableMetersKeys[]      = {"H "          , "L "           , "q "   , NULL};
+static int         AvailableMetersEvents[]    = {'H'           , 'L'            , 'q'};
 
 static const char* DisplayOptionsFunctions[] = {"Done ", NULL};
 static const char* DisplayOptionsKeys[]      = {"q "   , NULL};

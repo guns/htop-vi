@@ -581,7 +581,6 @@ int main(int argc, char** argv) {
          break;
       }
       case 'H':         /* (H)elp */
-      case '?':
       {
          showHelp(pl);
          FunctionBar_draw(defaultBar, NULL);

@@ -36,9 +36,9 @@ char* FUNCTIONBAR_CLASS = "FunctionBar";
 #define FUNCTIONBAR_CLASS NULL
 #endif
 
-static const char* FunctionBar_FKeys[]   = {"? ", ": ", "/ ", "i ", "t ", "< ", "] ", "[ ", "x ", "q ", NULL};
+static const char* FunctionBar_FKeys[]   = {"H ", ": ", "/ ", "i ", "t ", "< ", "] ", "[ ", "x ", "q ", NULL};
 static const char* FunctionBar_FLabels[] = {""  , ""  , ""  , ""  , ""  , ""  , ""  , ""  , ""  , ""  , NULL};
-static int         FunctionBar_FEvents[] = {'?' , ':' , '/' , 'i' , 't' , '<' , ']' , '[' , 'x' , 'q'};
+static int         FunctionBar_FEvents[] = {'H' , ':' , '/' , 'i' , 't' , '<' , ']' , '[' , 'x' , 'q'};
 
 FunctionBar* FunctionBar_new(const char** functions, const char** keys, int* events) {
    FunctionBar* this = malloc(sizeof(FunctionBar));

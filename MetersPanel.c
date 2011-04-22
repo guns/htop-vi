@@ -37,7 +37,7 @@ static HandlerResult MetersPanel_EventHandler(Panel* super, int ch) {
       case 0x0a:        /* \n */
       case 0x0d:        /* \r */
       case KEY_ENTER:
-      case 't':
+      case ' ':
       {
          Meter* meter = (Meter*) Vector_get(this->meters, selected);
          int mode = meter->mode + 1;
