@@ -246,22 +246,27 @@ static inline void setSortKey(ProcessList* pl, ProcessField sortKey, Panel* pane
    ProcessList_printHeader(pl, Panel_getHeader(panel));
 }
 
-static bool searchSelect(bool next, Panel *panel, char *incSearchBuffer) {
+static bool searchSelect(bool next, bool skip, Panel *panel, char *incSearchBuffer) {
    /* bail if search buffer is empty */
    if (!incSearchBuffer[0])
       return false;
 
-   int size  = Panel_size(panel);
-   int here  = Panel_getSelectedIndex(panel);
-   int i     = next ? here + 1 : here - 1;
-   int found = false;
+   bool found = false;
+   int  size  = Panel_size(panel);
+   int  here  = Panel_getSelectedIndex(panel);
+   int  i     = here;
 
-   while (i != here) {
+   if (skip)
+      next ? ++i : --i;
+
+   int end = next ? i-1 : i+1;
+
+   while (i != end) {
       /* wrap around */
       if (next) {
          if (i == size) i = 0;
       } else {
-         if (i == -1) i = size - 1;
+         if (i == -1)   i = size - 1;
       }
 
       Process* p = (Process *)Panel_get(panel, i);
@@ -472,10 +477,10 @@ int main(int argc, char** argv) {
       if (incSearchMode) {
          doRefresh = false;
          if (ch == KEY_CTRLN) {
-            searchSelect(incSearchForward, panel, incSearchBuffer);
+            searchSelect(incSearchForward, true, panel, incSearchBuffer);
             continue;
          } else if (ch == KEY_CTRLP) {
-            searchSelect(incSearchForward, panel, incSearchBuffer);
+            searchSelect(incSearchForward, true, panel, incSearchBuffer);
             continue;
          } else if (isprint((char)ch) && (incSearchIndex < INCSEARCH_MAX)) {
             incSearchBuffer[incSearchIndex] = ch;
@@ -490,7 +495,7 @@ int main(int argc, char** argv) {
             continue;
          }
 
-         bool found = searchSelect(incSearchForward, panel, incSearchBuffer);
+         bool found = searchSelect(incSearchForward, false, panel, incSearchBuffer);
 
          if (found)
             FunctionBar_draw(searchBar, incSearchBuffer);
@@ -816,10 +821,10 @@ int main(int argc, char** argv) {
          settings->changed = true;
          break;
       case 'n':
-         searchSelect(incSearchForward, panel, incSearchBuffer);
+         searchSelect(incSearchForward, true, panel, incSearchBuffer);
          break;
       case 'N':
-         searchSelect(incSearchForward, panel, incSearchBuffer);
+         searchSelect(incSearchForward, true, panel, incSearchBuffer);
          break;
       default:
          doRefresh = false;
