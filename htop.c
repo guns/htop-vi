@@ -247,6 +247,10 @@ static inline void setSortKey(ProcessList* pl, ProcessField sortKey, Panel* pane
 }
 
 static void searchSelect(bool next, Panel *panel, char *incSearchBuffer) {
+   /* bail if search buffer is empty */
+   if (!incSearchBuffer[0])
+      return;
+
    int size = Panel_size(panel);
    int here = Panel_getSelectedIndex(panel);
    int i    = next ? here + 1 : here - 1;
