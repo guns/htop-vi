@@ -246,6 +246,29 @@ static inline void setSortKey(ProcessList* pl, ProcessField sortKey, Panel* pane
    ProcessList_printHeader(pl, Panel_getHeader(panel));
 }
 
+static void searchSelect(bool next, Panel *panel, char *incSearchBuffer) {
+   int size = Panel_size(panel);
+   int here = Panel_getSelectedIndex(panel);
+   int i    = next ? here + 1 : here - 1;
+
+   while (i != here) {
+      /* wrap around */
+      if (next) {
+         if (i == size) i = 0;
+      } else {
+         if (i == -1) i = size - 1;
+      }
+
+      Process* p = (Process *)Panel_get(panel, i);
+      if (String_contains_i(p->comm, incSearchBuffer)) {
+         Panel_setSelected(panel, i);
+         break;
+      }
+
+      next ? ++i : --i;
+   }
+}
+
 int main(int argc, char** argv) {
 
    int delay = -1;
@@ -356,9 +379,9 @@ int main(int argc, char** argv) {
    }
    ProcessList_printHeader(pl, Panel_getHeader(panel));
    
-   const char* searchFunctions[] = {"Next "  , "Exit ", "Search: ", NULL};
-   const char* searchKeys[]      = {"Ctrl-N" , "q"    , " "};
-   int         searchEvents[]    = {KEY_CTRLN, 'q'    , ERR};
+   const char* searchFunctions[] = {"Previous ", "Next "  , "Search: ", NULL};
+   const char* searchKeys[]      = {"Ctrl-P "  , "Ctrl-N ", "  "};
+   int         searchEvents[]    = {KEY_CTRLP  , KEY_CTRLN, ERR};
    FunctionBar* searchBar = FunctionBar_new(searchFunctions, searchKeys, searchEvents);
    
    const char* defaultFunctions[] = {"Help ", "Setup ", "Search ", "Invert ", "Tree ",
@@ -441,18 +464,10 @@ int main(int argc, char** argv) {
          doRefresh = false;
          int size = Panel_size(panel);
          if (ch == KEY_CTRLN) {
-            int here = Panel_getSelectedIndex(panel);
-            int i = here+1;
-            while (i != here) {
-               if (i == size)
-                  i = 0;
-               Process* p = (Process*) Panel_get(panel, i);
-               if (String_contains_i(p->comm, incSearchBuffer)) {
-                  Panel_setSelected(panel, i);
-                  break;
-               }
-               i++;
-            }
+            searchSelect(true, panel, incSearchBuffer);
+            continue;
+         } else if (ch == KEY_CTRLP) {
+            searchSelect(false, panel, incSearchBuffer);
             continue;
          } else if (isprint((char)ch) && (incSearchIndex < INCSEARCH_MAX)) {
             incSearchBuffer[incSearchIndex] = ch;
@@ -771,7 +786,8 @@ int main(int argc, char** argv) {
          doRefresh = changePriority(panel, -1);
          break;
       }
-      case KEY_CTRLN:   /* vi completion */
+      case KEY_CTRLP:   /* vi */
+      case KEY_CTRLN:   /* vi */
       case '/':
          incSearchIndex = 0;
          incSearchBuffer[0] = 0;
