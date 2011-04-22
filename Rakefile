@@ -9,7 +9,6 @@ task :configure do
   configure = File.expand_path 'configure'
   system './autogen.sh' unless File.executable? configure
 
-  # `--enable-unicode' unnecessarily breaks build on Arch Linux
   opts = %W[
     --prefix=#{ENV['PREFIX'] || '/opt/htop'}
     --enable-openvz
