@@ -246,14 +246,15 @@ static inline void setSortKey(ProcessList* pl, ProcessField sortKey, Panel* pane
    ProcessList_printHeader(pl, Panel_getHeader(panel));
 }
 
-static void searchSelect(bool next, Panel *panel, char *incSearchBuffer) {
+static bool searchSelect(bool next, Panel *panel, char *incSearchBuffer) {
    /* bail if search buffer is empty */
    if (!incSearchBuffer[0])
-      return;
+      return false;
 
-   int size = Panel_size(panel);
-   int here = Panel_getSelectedIndex(panel);
-   int i    = next ? here + 1 : here - 1;
+   int size  = Panel_size(panel);
+   int here  = Panel_getSelectedIndex(panel);
+   int i     = next ? here + 1 : here - 1;
+   int found = false;
 
    while (i != here) {
       /* wrap around */
@@ -266,11 +267,14 @@ static void searchSelect(bool next, Panel *panel, char *incSearchBuffer) {
       Process* p = (Process *)Panel_get(panel, i);
       if (String_contains_i(p->comm, incSearchBuffer)) {
          Panel_setSelected(panel, i);
+         found = true;
          break;
       }
 
       next ? ++i : --i;
    }
+
+   return found;
 }
 
 int main(int argc, char** argv) {
@@ -357,7 +361,7 @@ int main(int argc, char** argv) {
    int incSearchIndex = 0;
    incSearchBuffer[0] = 0;
    bool incSearchMode = false;
-   bool incSearchBackwards = false;
+   bool incSearchForward = true;
 
    ProcessList* pl = NULL;
    UsersTable* ut = UsersTable_new();
@@ -468,10 +472,10 @@ int main(int argc, char** argv) {
       if (incSearchMode) {
          doRefresh = false;
          if (ch == KEY_CTRLN) {
-            searchSelect(incSearchBackwards == false, panel, incSearchBuffer);
+            searchSelect(incSearchForward, panel, incSearchBuffer);
             continue;
          } else if (ch == KEY_CTRLP) {
-            searchSelect(incSearchBackwards == true, panel, incSearchBuffer);
+            searchSelect(incSearchForward, panel, incSearchBuffer);
             continue;
          } else if (isprint((char)ch) && (incSearchIndex < INCSEARCH_MAX)) {
             incSearchBuffer[incSearchIndex] = ch;
@@ -486,26 +490,7 @@ int main(int argc, char** argv) {
             continue;
          }
 
-         bool found = false;
-         int  size  = Panel_size(panel);
-         int  i     = incSearchBackwards ? size-1 : 0;
-
-         while (true) {
-            Process* p = (Process*) Panel_get(panel, i);
-            if (String_contains_i(p->comm, incSearchBuffer)) {
-               Panel_setSelected(panel, i);
-               found = true;
-               break;
-            }
-
-            if (incSearchBackwards) {
-               if (i == 0) break;
-               else --i;
-            } else {
-               if (i == size-1) break;
-               else ++i;
-            }
-         }
+         bool found = searchSelect(incSearchForward, panel, incSearchBuffer);
 
          if (found)
             FunctionBar_draw(searchBar, incSearchBuffer);
@@ -808,7 +793,7 @@ int main(int argc, char** argv) {
          incSearchIndex = 0;
          incSearchBuffer[0] = 0;
          incSearchMode = true;
-         incSearchBackwards = (ch == KEY_CTRLP || ch == '?');
+         incSearchForward = (ch == KEY_CTRLN || ch == '/');
          FunctionBar_draw(searchBar, incSearchBuffer);
          break;
       case 't':
@@ -831,10 +816,10 @@ int main(int argc, char** argv) {
          settings->changed = true;
          break;
       case 'n':
-         searchSelect(incSearchBackwards == false, panel, incSearchBuffer);
+         searchSelect(incSearchForward, panel, incSearchBuffer);
          break;
       case 'N':
-         searchSelect(incSearchBackwards == true, panel, incSearchBuffer);
+         searchSelect(incSearchForward, panel, incSearchBuffer);
          break;
       default:
          doRefresh = false;
