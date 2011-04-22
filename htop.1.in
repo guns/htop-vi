@@ -62,10 +62,17 @@ Setup screen. There you can configure meters displayed on the top side
 of the screen, as well as set various display options, choose among
 color schemes and select the layout of the displayed columns.
 .TP
-.B Ctrl-N, /
+.B /, ?
 Incremental process search: type in part of a process command line and
-the selection highlight will be moved to it. While in search mode,
-pressing this key will cycle through matching occurrences.
+the selection highlight will be moved to it. "/" matches forwards, "?"
+matches backwards.
+.TP
+.B Ctrl-N, Ctrl-P
+While in search mode, pressing these keys will cycle through matching
+occurrences.
+.TP
+.B n, N
+Jump to next / previous match when outside of search mode.
 .TP
 .B i, I
 Invert sort order: if sort order is increasing, switch to decreasing,
