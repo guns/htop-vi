@@ -115,43 +115,43 @@ static void showHelp(ProcessList* pl) {
       mvaddstr(7, 0, "In monochrome, meters are displayed through different chars, in order: |#*@$%&");
    }
    mvaddstr( 8, 0, " Status: R: running; S: sleeping; T: traced/stopped; Z: zombie; D: disk sleep");
-   mvaddstr( 9, 0, " Arrows: scroll process list             F5 t: tree view");
+   mvaddstr( 9, 0, "   hjkl: scroll process list                t: tree view");
    mvaddstr(10, 0, " Digits: incremental PID search             u: show processes of a single user");
-   mvaddstr(11, 0, "   F3 /: incremental name search            H: hide/show user threads");
-   mvaddstr(12, 0, "                                            K: hide/show kernel threads");
+   mvaddstr(11, 0, "    / ?: incremental name search            $: hide/show user threads");
+   mvaddstr(12, 0, "                                            #: hide/show kernel threads");
    mvaddstr(13, 0, "  Space: tag processes                      F: cursor follows process");
    mvaddstr(14, 0, "      U: untag all processes              + -: expand/collapse tree");
-   mvaddstr(15, 0, "   F9 k: kill process/tagged processes      P: sort by CPU%");
-   mvaddstr(16, 0, "   ] F7: higher priority (root only)        M: sort by MEM%");
-   mvaddstr(17, 0, "   [ F8: lower priority (+ nice)            T: sort by TIME");
+   mvaddstr(15, 0, "    K x: kill process/tagged processes    C P: sort by CPU%");
+   mvaddstr(16, 0, "      ]: higher priority (root only)        M: sort by MEM%");
+   mvaddstr(17, 0, "      [: lower priority (+ nice)            T: sort by TIME");
 #ifdef HAVE_PLPA
    if (pl->cpuCount > 1)
-      mvaddstr(18, 0, "      a: set CPU affinity                F4 I: invert sort order");
+      mvaddstr(18, 0, "      a: set CPU affinity                 i I: invert sort order");
    else
 #endif
-      mvaddstr(18, 0, "                                         F4 I: invert sort order");
-   mvaddstr(19, 0, "   F2 S: setup                           F6 >: select sort column");
-   mvaddstr(20, 0, "   F1 h: show this help screen              l: list open files with lsof");
-   mvaddstr(21, 0, "  F10 q: quit                               s: trace syscalls with strace");
+      mvaddstr(18, 0, "                                          i I: invert sort order");
+   mvaddstr(19, 0, "    : S: setup                        , < . >: select sort column");
+   mvaddstr(20, 0, "      H: show this help screen              o: list open files with lsof");
+   mvaddstr(21, 0, "  Esc q: quit                               s: trace syscalls with strace");
 
    attrset(CRT_colors[HELP_BOLD]);
-   mvaddstr( 9, 0, " Arrows"); mvaddstr( 9,40, " F5 t");
+   mvaddstr( 9, 0, "   hjkl"); mvaddstr( 9,40, "    t");
    mvaddstr(10, 0, " Digits"); mvaddstr(10,40, "    u");
-   mvaddstr(11, 0, "   F3 /"); mvaddstr(11,40, "    H");
-                               mvaddstr(12,40, "    K");
+   mvaddstr(11, 0, "    / ?"); mvaddstr(11,40, "    $");
+                               mvaddstr(12,40, "    #");
    mvaddstr(13, 0, "  Space"); mvaddstr(13,40, "    F");
    mvaddstr(14, 0, "      U"); mvaddstr(14,40, "  + -");
-   mvaddstr(15, 0, "   F9 k"); mvaddstr(15,40, "    P");
-   mvaddstr(16, 0, "   [ F7"); mvaddstr(16,40, "    M");
-   mvaddstr(17, 0, "   ] F8"); mvaddstr(17,40, "    T");
-                               mvaddstr(18,40, " F4 I");
+   mvaddstr(15, 0, "    K x"); mvaddstr(15,40, "  C P");
+   mvaddstr(16, 0, "      ]"); mvaddstr(16,40, "    M");
+   mvaddstr(17, 0, "      ["); mvaddstr(17,40, "    T");
+                               mvaddstr(18,40, "  i I");
 #if HAVE_PLPA
    if (pl->cpuCount > 1)
-      mvaddstr(18, 0, "      a:");
+      mvaddstr(18, 0, "      a");
 #endif
-   mvaddstr(19, 0, "   F2 S"); mvaddstr(19,40, " F6 >");
-   mvaddstr(20, 0, " ? F1 h"); mvaddstr(20,40, "    l");
-   mvaddstr(21, 0, "  F10 q"); mvaddstr(21,40, "    s");
+   mvaddstr(19, 0, "    : S"); mvaddstr(19,38, ", < . >");
+   mvaddstr(20, 0, "      H"); mvaddstr(20,40, "    o");
+   mvaddstr(21, 0, "  Esc q"); mvaddstr(21,40, "    s");
    attrset(CRT_colors[DEFAULT_COLOR]);
 
    attrset(CRT_colors[HELP_BOLD]);
