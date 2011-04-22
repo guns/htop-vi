@@ -466,7 +466,6 @@ int main(int argc, char** argv) {
 
       if (incSearchMode) {
          doRefresh = false;
-         int size = Panel_size(panel);
          if (ch == KEY_CTRLN) {
             searchSelect(true, panel, incSearchBuffer);
             continue;
@@ -486,6 +485,7 @@ int main(int argc, char** argv) {
             continue;
          }
 
+         int size = Panel_size(panel);
          bool found = false;
          for (int i = 0; i < size; i++) {
             Process* p = (Process*) Panel_get(panel, i);
