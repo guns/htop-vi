@@ -204,7 +204,7 @@ static HandlerResult pickWithEnter(Panel* panel, int ch) {
 }
 
 static Object* pickFromVector(Panel* panel, Panel* list, int x, int y, const char** keyLabels, FunctionBar* prevBar, Header* header) {
-   const char* fuKeys[] = {"Enter", "Esc", NULL};
+   const char* fuKeys[] = {"Enter ", "q ", NULL};
    int fuEvents[] = {13, 27};
    if (!list->eventHandler)
       Panel_setEventHandler(list, pickWithEnter);
@@ -388,8 +388,8 @@ int main(int argc, char** argv) {
    int         searchEvents[]    = {KEY_CTRLP  , KEY_CTRLN, ERR};
    FunctionBar* searchBar = FunctionBar_new(searchFunctions, searchKeys, searchEvents);
    
-   const char* defaultFunctions[] = {"Help ", "Setup ", "Search ", "Invert ", "Tree ",
-       "SortBy ", "Nice- ", "Nice+ ", "Kill ", "Quit ", NULL};
+   const char* defaultFunctions[] = {"Help ", "Setup ", "Search ", "Next/Prev ", "Invert ",
+                                     "Tree ", "SortBy ", "Nice+- ", "Kill ", "Quit ", NULL};
    FunctionBar* defaultBar = FunctionBar_new(defaultFunctions, NULL, NULL);
 
    ProcessList_scan(pl);
@@ -649,7 +649,7 @@ int main(int argc, char** argv) {
          Vector_sort(usersPanel->items);
          ListItem* allUsers = ListItem_new("All users", -1);
          Panel_insert(usersPanel, 0, (Object*) allUsers);
-         const char* fuFunctions[] = {"Show    ", "Cancel ", NULL};
+         const char* fuFunctions[] = {"Show ", "Cancel ", NULL};
          ListItem* picked = (ListItem*) pickFromVector(panel, usersPanel, 20, headerHeight, fuFunctions, defaultBar, header);
          if (picked) {
             if (picked == allUsers) {
@@ -678,7 +678,7 @@ int main(int argc, char** argv) {
             killPanel = (Panel*) SignalsPanel_new(0, 0, 0, 0);
          }
          SignalsPanel_reset((SignalsPanel*) killPanel);
-         const char* fuFunctions[] = {"Send  ", "Cancel ", NULL};
+         const char* fuFunctions[] = {"Send ", "Cancel ", NULL};
          Signal* sgn = (Signal*) pickFromVector(panel, killPanel, 15, headerHeight, fuFunctions, defaultBar, header);
          if (sgn) {
             if (sgn->number != 0) {
@@ -714,7 +714,7 @@ int main(int argc, char** argv) {
          
          Panel* affinityPanel = AffinityPanel_new(pl, curr);
 
-         const char* fuFunctions[] = {"Set    ", "Cancel ", NULL};
+         const char* fuFunctions[] = {"Set ", "Cancel ", NULL};
          void* set = pickFromVector(panel, affinityPanel, 15, headerHeight, fuFunctions, defaultBar, header);
          if (set) {
             unsigned long new = AffinityPanel_getAffinity(affinityPanel);
@@ -751,7 +751,7 @@ int main(int argc, char** argv) {
       {
          Panel* sortPanel = Panel_new(0, 0, 0, 0, LISTITEM_CLASS, true, ListItem_compare);
          Panel_setHeader(sortPanel, "Sort by");
-         const char* fuFunctions[] = {"Sort  ", "Cancel ", NULL};
+         const char* fuFunctions[] = {"Sort ", "Cancel ", NULL};
          ProcessField* fields = pl->fields;
          for (int i = 0; fields[i]; i++) {
             char* name = String_trim(Process_fieldTitles[fields[i]]);
