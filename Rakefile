@@ -9,12 +9,13 @@ task :configure do
   configure = File.expand_path 'configure'
   system './autogen.sh' unless File.executable? configure
 
-  opts = %W[
+  cmd = %W[
+    #{configure}
     --prefix=#{ENV['PREFIX'] || '/opt/htop'}
     --enable-openvz
     --enable-vserver
   ]
 
-  puts ([configure] + opts).join(' ')
-  system configure, *opts
+  puts cmd.join(' ')
+  system *cmd
 end
